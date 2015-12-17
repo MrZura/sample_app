@@ -48,7 +48,14 @@ describe "Authentication" do
 
     describe "for non-signed-in users" do
       let(:user) { FactoryGirl.create(:user) }
-
+      
+      describe "sould not being seen profile and settings links" do
+        before { visit root_path }
+        
+        it { should_not have_link('Profile',  href: user_path(user)) }
+        it { should_not have_link('Settings', href: edit_user_path(user)) }
+      end
+      
       describe "when attempting to visit a protected page" do
         before do
           visit edit_user_path(user)

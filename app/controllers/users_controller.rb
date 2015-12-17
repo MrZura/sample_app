@@ -12,7 +12,11 @@ class UsersController < ApplicationController
   end
   
   def new
-    @user = User.new
+    if signed_in?
+      redirect_to root_url, notice: "You must be logged-off to sign up."
+    else
+      @user = User.new
+    end
   end
   
   def create
