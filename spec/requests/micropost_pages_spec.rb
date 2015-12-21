@@ -28,6 +28,39 @@ describe "Micropost pages" do
       it "should create a micropost" do
         expect { click_button "Post" }.to change(Micropost, :count).by(1)
       end
+      
+      describe "after creating micropost" do
+        
+        before do
+          fill_in 'micropost_content', with: "Lorem ipsum"
+          click_button "Post"
+        end
+        it "should have micropost's total count 1" do
+          should have_content('1 micropost')
+        end
+        
+        describe "and adding another" do
+          before do
+            fill_in 'micropost_content', with: "Lorem ipsum"
+            click_button "Post"
+          end
+            it "should have micropost's total count 1" do
+            should have_content('2 microposts')
+          end
+        end
+      end
+    end
+  end
+  
+  describe "micropost destruction" do
+    before { FactoryGirl.create(:micropost, user: user) }
+
+    describe "as correct user" do
+      before { visit root_path }
+
+      it "should delete a micropost" do
+        expect { click_link "delete" }.to change(Micropost, :count).by(-1)
+      end
     end
   end
 end
